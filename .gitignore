@@ -18,6 +18,15 @@ logs/
 # Env
 .env
 
+# Temp files from attachment handling
+tmp/
+
+# Personal setup notes (contains phone numbers)
+SETUP.md
+
+# Audit artifacts
+*audit*.json
+
 # IDE
 .vscode/
 .idea/

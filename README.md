@@ -10,8 +10,8 @@ The bridge runs as a **linked Signal device** via `signal-cli`, connects to Disc
 Signal Network <--E2E--> signal-cli (JSON-RPC daemon) <--TCP--> Bridge <--REST/WS--> Discord
 ```
 
-- **signal-cli** handles all Signal-specific crypto (E2EE, device linking, group management). In daemon mode, it delivers incoming messages as JSON-RPC push notifications to the bridge.
-- **Bridge** (TypeScript/Node.js) routes messages, manages channel mappings, stores events for dedup, and processes display names.
+- **signal-cli** handles all Signal-specific crypto (E2EE, device linking, group management). In daemon mode, it delivers incoming messages as JSON-RPC push notifications to the bridge. The bridge does **not** use the CLI `receive` subprocess (which is incompatible with daemon mode).
+- **Bridge** (TypeScript/Node.js) routes messages, manages channel mappings, stores events for dedup, and processes display names via priority chain: `sourceName` from envelope → config contacts → sanitized fallback.
 - **Discord.js** handles Discord connectivity with webhook-based user attribution.
 
 ## Features
@@ -23,6 +23,7 @@ Signal Network <--E2E--> signal-cli (JSON-RPC daemon) <--TCP--> Bridge <--REST/W
 - ✅ Deduplication - EventStore prevents echo loops
 - ✅ Privacy-first display - priority: Signal profile name → config contacts → sanitized fallback
 - ✅ Configurable phone-to-username mapping via `contacts:`
+- ✅ Scope-based mapping filtering (`scope: "group"` prevents DM leaks)
 - ✅ Typing indicator forwarding (Discord → Signal)
 - ✅ SQLite (built-in) or PostgreSQL
 - ✅ Docker support
@@ -33,7 +34,7 @@ Signal Network <--E2E--> signal-cli (JSON-RPC daemon) <--TCP--> Bridge <--REST/W
 
 - **Node.js 18+**
 - **Java 21+** (required by signal-cli 0.14+)
-- **signal-cli 0.14+** - [install](https://github.com/AsamK/signal-cli) and link to your phone number
+- **signal-cli 0.14.x** - [install](https://github.com/AsamK/signal-cli) and link to your phone number
 - A **Discord application** with a bot token (create at [Discord Developer Portal](https://discord.com/developers/applications))
 
 ## Quick Start
@@ -61,11 +62,11 @@ npm start
 ### Windows Quick Start
 
 Use the included launcher scripts:
-- `start-bridge.bat` - launches daemon + bridge with auto-restart
-- `start-daemon.ps1` - launches just the daemon
+- `start-bridge.bat` - launches daemon + bridge with auto-restart (double-click this)
+- `start-daemon.bat` or `start-daemon.ps1` - launches just the daemon
 - `stop-bridge.bat` - stops everything
 
-Set `JAVA_HOME` in `start-daemon.ps1` to your Java installation path.
+**Before first run:** Edit `start-daemon.bat` (or `start-daemon.ps1`) and set `JAVA_HOME` to your Java 21+ installation path.
 
 ### Docker
 
@@ -130,6 +131,8 @@ Enable Developer Mode in Discord (User Settings → Advanced → Developer Mode)
 | Phone numbers showing in Discord | No `sourceName` in envelope, no contact mapping | Add `contacts:` entries to config.yaml |
 | Duplicate messages | EventStore dedup not working | Check database path is writable |
 | Messages from others don't arrive | Not yet received - daemon delivers all via push notifications | Enable `console: "verbose"` and check logs for `SIGNAL_RECEIVE` lines |
+| CLI receive errors in logs | Stale build artifacts | Run `npm run build` to recompile from TypeScript source |
+| DMs leaking to group-mapped channels | Missing `scope` on mapping | Add `scope: "group"` to group chat mappings |
 
 ## License
 

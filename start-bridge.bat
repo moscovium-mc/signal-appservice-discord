@@ -3,7 +3,7 @@ title Signal Bridge
 cd /d "%~dp0"
 
 echo [1/3] Starting signal-cli daemon (minimized)...
-start "signal-cli daemon" /min powershell -ExecutionPolicy Bypass -File start-daemon.ps1
+start "signal-cli daemon" /min cmd /c start-daemon.bat
 
 echo [2/3] Waiting for daemon on port 7583 (up to 30 seconds)...
 powershell -Command ^
@@ -16,14 +16,14 @@ if %errorlevel% neq 0 (
 )
 echo Daemon is ready.
 
-echo [3/3] Starting bridge...
+echo [3/3] Starting bridge (with auto-restart)...
 echo Bridge logs: logs\bridge.log
+echo Restart logs: logs\restart.log
 echo.
 echo Close this window to stop the bridge.
 echo.
-npm start
-if %errorlevel% neq 0 (
-    echo.
-    echo Bridge exited with code %errorlevel%. Check logs\bridge.log for details.
-    pause
-)
+
+powershell -ExecutionPolicy Bypass -File run-bridge.ps1
+
+echo Bridge exited. Press any key to close.
+pause >nul

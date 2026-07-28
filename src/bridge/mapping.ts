@@ -30,12 +30,16 @@ export class MappingManager {
     }
 
     public loadFromDbMappings(dbMappings: any[]): void {
+        // Collect Discord channels already claimed by config mappings
+        const configChannels = new Set(this.mappings.map((m) => m.discordChannelId));
         for (const m of dbMappings) {
-            // Avoid duplicates
+            // Skip exact duplicate
             const exists = this.mappings.some(
                 (em) => em.signalId === m.signal_id && em.discordChannelId === m.discord_channel_id,
             );
             if (exists) continue;
+            // Skip if config already has a mapping for this Discord channel (stale/overridden)
+            if (configChannels.has(m.discord_channel_id)) continue;
             this.mappings.push({
                 name: m.name || "Unnamed",
                 signalId: m.signal_id,

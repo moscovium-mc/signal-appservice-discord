@@ -16,6 +16,16 @@ if %errorlevel% neq 0 (
 )
 echo Daemon is ready.
 
+if not exist "build\main.js" (
+    echo [3/3] Building bridge (first run or clean checkout)...
+    call npm install
+    if %errorlevel% neq 0 (
+        echo [ERROR] npm install failed. Make sure Node.js is installed.
+        pause
+        exit /b 1
+    )
+)
+
 echo [3/3] Starting bridge (with auto-restart)...
 echo Bridge logs: logs\bridge.log
 echo Restart logs: logs\restart.log

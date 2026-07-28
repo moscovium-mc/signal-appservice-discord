@@ -14,6 +14,7 @@ function Write-Log {
     param([string]$msg)
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     "$timestamp $msg" | Out-File -FilePath $logFile -Append
+    Write-Host $msg
 }
 
 Write-Log "=== Bridge monitor started ==="

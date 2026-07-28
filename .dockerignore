@@ -1,0 +1,8 @@
+node_modules/
+build/
+data/
+logs/
+config/config.yaml
+.git/
+.gitignore
+*.md

@@ -1,0 +1,46 @@
+{
+  "name": "signal-appservice-discord",
+  "version": "1.0.0",
+  "description": "A bridge between Signal and Discord for personal/community use",
+  "main": "build/main.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node build/main.js",
+    "test": "mocha -r ts-node/register test/**/*.ts",
+    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "postinstall": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moscovium-mc/signal-appservice-discord"
+  },
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "better-sqlite3": "^9.4.3",
+    "pg-promise": "^11.9.1",
+    "express": "^4.18.2",
+    "js-yaml": "^4.1.0",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^5.0.0",
+    "uuid": "^9.0.0",
+    "mime": "^3.0.0",
+    "p-queue": "^7.4.1",
+    "prom-client": "^15.1.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/express": "^4.17.21",
+    "@types/js-yaml": "^4.0.9",
+    "@types/mime": "^3.0.4",
+    "@types/node": "^20.10.0",
+    "@types/uuid": "^9.0.7",
+    "typescript": "^5.3.2",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10",
+    "eslint": "^8.55.0"
+  }
+}

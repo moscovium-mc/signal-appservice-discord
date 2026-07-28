@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  bridge:
+    build: .
+    container_name: signal-discord-bridge
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+      - /tmp/signal-cli-socket:/tmp/signal-cli-socket
+    ports:
+      - "9005:9005"
+    environment:
+      - NODE_ENV=production

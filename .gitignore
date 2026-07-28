@@ -1,0 +1,25 @@
+node_modules/
+build/
+.DS_Store
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+data/
+
+# Config (contains tokens/keys)
+config/config.yaml
+
+# Logs
+logs/
+*.log
+
+# Env
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

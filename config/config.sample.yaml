@@ -1,0 +1,111 @@
+# signal-appservice-discord configuration
+# Copy this file to config.yaml and edit for your setup.
+#
+# Secrets: Never commit config.yaml to version control.
+# .gitignore already excludes config/config.yaml, *.db, logs/
+
+signal:
+  # Your Signal phone number in international format (with leading +)
+  account: "+12223334444"
+
+  # Connection mode: "external" (connect to already-running daemon) or "native" (bridge spawns signal-cli)
+  mode: "external"
+
+  # TCP host/port for the signal-cli daemon (Windows users use --tcp flag)
+  host: "127.0.0.1"
+  port: 7583
+
+  # Unix socket path (alternative to TCP, used on Linux/macOS)
+  socketPath: ""
+
+  # Path to signal-cli binary
+  cliPath: "/usr/bin/signal-cli"
+
+  # Directory where signal-cli stores downloaded attachments
+  attachmentDir: "/tmp/signal-attachments"
+
+discord:
+  # Your Discord bot token from https://discord.com/developers/applications
+  token: "YOUR_BOT_TOKEN_HERE"
+
+  # Enable privileged gateway intents (needed for reading message content).
+  # You must enable these in the Discord Developer Portal under your bot settings.
+  usePrivilegedIntents: false
+
+  # Disable forwarding typing notifications from Discord to Signal
+  disableTypingNotifications: false
+
+  # Disable forwarding message deletions from Discord to Signal
+  disableDeletionForwarding: false
+
+mappings:
+  # Each mapping bridges a Signal chat (DM or group) to a Discord channel.
+  # - signal: a phone number for DMs, or a base64-encoded group ID for group chats
+  # - discord: a Discord channel ID (snowflake)
+  # - direction: "two-way", "signal-to-discord", or "discord-to-signal"
+  # - attribution: "username" (text prefix) or "webhook" (bot webhook for avatar/name)
+  # - scope: (optional) "any" (default), "group", or "dm"
+  #   Set scope: "group" to prevent DMs from ever matching this mapping
+
+  - name: "My Signal Group"
+    signal: "base64_encoded_group_id_here"
+    discord: "123456789012345678"
+    direction: "two-way"
+    attribution: "webhook"
+    scope: "group"
+
+  - name: "DM with a Friend"
+    signal: "+15556667777"
+    discord: "987654321098765432"
+    direction: "two-way"
+    attribution: "username"
+    scope: "dm"
+
+contacts:
+  # Map phone numbers to display names shown in Discord (instead of raw numbers).
+  # The sender's display name (sourceName) from the envelope is shown first when available,
+  # then this mapping is checked, and finally a sanitized label like "Signal-XXXX".
+  "+15556667777": "@alice.01"
+  "+15551112222": "@bob.99"
+
+database:
+  # SQLite (default, recommended for single-user):
+  filename: "data/bridge.db"
+  # Or PostgreSQL (for multi-user):
+  # connString: "postgresql://user:pass@localhost/signal_bridge"
+
+logging:
+  # Console log level: silly, verbose, info, warn, error, silent
+  console: "info"
+  # Timestamp format (moment.js style)
+  lineDateFormat: "MMM-D HH:mm:ss.SSS"
+  files:
+    - file: "logs/bridge.log"
+      level: "verbose"
+    - file: "logs/error.log"
+      level: "error"
+
+limits:
+  # Delay in ms between sends to a Discord channel (avoids echo loops)
+  discordSendDelay: 1500
+  # Maximum file size for attachment downloads (bytes)
+  maxFileSize: 8000000
+
+metrics:
+  # Prometheus metrics endpoint
+  enable: false
+  port: 9001
+  host: "127.0.0.1"
+
+provisioning:
+  # Optional REST API for runtime mapping management
+  enable: false
+  port: 9006
+  host: "127.0.0.1"
+  apiKey: "changeme"
+
+groupsync:
+  # Periodically sync group member lists for typing indicator routing
+  enable: true
+  # Sync interval in milliseconds (default: 5 minutes)
+  interval: 300000

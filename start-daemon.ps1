@@ -1,7 +1,7 @@
-# Edit these paths for your system
-$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-25.0.4.7-hotspot"
-$account = "+15594104227"
-$cli = "$env:USERPROFILE\signal-cli\signal-cli-0.14.6\bin\signal-cli.bat"
+# === EDIT THESE for your system ===
+$env:JAVA_HOME = "C:\Path\To\Java-21+"
+$account = "+15551234567"
+$cli = "C:\Path\To\signal-cli\bin\signal-cli.bat"
 
 # Kill stale java processes holding port 7583
 try { $c = [System.Net.Sockets.TcpClient]::new('127.0.0.1', 7583); $c.Close(); Get-Process -Name java | Stop-Process -Force; Start-Sleep 3 } catch {}

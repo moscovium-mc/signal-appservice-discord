@@ -26,6 +26,9 @@ Initial release.
 - signal-cli JSON-RPC daemon mode (TCP port) with push notification delivery exclusively
 - Winston logging with file output
 - Config validation via typed classes
+- Port-killing on daemon startup (prevents address-in-use errors)
+- Daemon log output redirected to `logs/daemon.log`
+- start-daemon scripts use placeholders for public distribution
 
 ### Fixes
 
@@ -34,6 +37,7 @@ Initial release.
 - CLI receive subprocess removed (broken in daemon mode) - push notifications only
 - Em dashes replaced with regular dashes throughout documentation
 - Build output now properly tracked via `postinstall` script
+- Config mappings now take priority over stale DB entries (Discord channel claimed by config is skipped during DB load)
 
 ### Supported signal-cli
 

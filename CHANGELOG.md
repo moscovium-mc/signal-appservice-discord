@@ -7,9 +7,11 @@ Initial release.
 ### Features
 
 - Bidirectional Signal ↔ Discord message relay for DMs and group chats
+- Attribution tags: `[Signal]` prefix on Discord, `[Discord]` prefix on Signal
 - Webhook-based user attribution (messages appear with sender's name/avatar)
 - Privacy-first display: Signal profile name → config contacts → sanitized fallback
 - Configurable phone-to-username mapping for privacy
+- Scope-based mapping filtering (`scope: "group"` prevents DM leaks)
 - Attachment forwarding (images, files)
 - Deduplication via SQLite EventStore (prevents echo loops)
 - Typing indicator forwarding (Discord → Signal)

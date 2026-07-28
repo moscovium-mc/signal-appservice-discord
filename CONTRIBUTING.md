@@ -43,7 +43,7 @@ The bridge has four layers:
 3. **Orchestrator** - routes parsed messages between Signal and Discord using mappings
 4. **DiscordBot** - Discord.js client that sends/receives Discord messages via webhooks
 
-Messages flow through `MessageProcessor` classes that convert platform-specific formats into a shared internal format. The `EventStore` prevents duplicate bridging (echo loops).
+Messages flow through `MessageProcessor` classes that convert platform-specific formats into a shared internal format. Senders are tagged with `[Signal]` on Discord and `[Discord]` on Signal for directional clarity. The `EventStore` prevents duplicate bridging (echo loops).
 
 ## Need Help?
 

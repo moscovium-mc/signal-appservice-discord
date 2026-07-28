@@ -30,6 +30,7 @@ discord:
 
   # Enable privileged gateway intents (needed for reading message content).
   # You must enable these in the Discord Developer Portal under your bot settings.
+  # Note: messages are automatically tagged with [Signal] on Discord and [Discord] on Signal.
   usePrivilegedIntents: false
 
   # Disable forwarding typing notifications from Discord to Signal

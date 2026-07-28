@@ -11,13 +11,14 @@ Signal Network <--E2E--> signal-cli (JSON-RPC daemon) <--TCP--> Bridge <--REST/W
 ```
 
 - **signal-cli** handles all Signal-specific crypto (E2EE, device linking, group management). In daemon mode, it delivers incoming messages as JSON-RPC push notifications to the bridge. The bridge does **not** use the CLI `receive` subprocess (which is incompatible with daemon mode).
-- **Bridge** (TypeScript/Node.js) routes messages, manages channel mappings, stores events for dedup, and processes display names via priority chain: `sourceName` from envelope → config contacts → sanitized fallback.
+- **Bridge** (TypeScript/Node.js) routes messages, manages channel mappings, stores events for dedup, and processes display names. Senders are prefixed with `[Signal]` on Discord and `[Discord]` on Signal for directional clarity.
 - **Discord.js** handles Discord connectivity with webhook-based user attribution.
 
 ## Features
 
 - ✅ Bidirectional relay: Signal ↔ Discord (DMs and groups)
 - ✅ Group chat support with base64 group IDs
+- ✅ Attribution tags — `[Signal]` prefix on Discord, `[Discord]` prefix on Signal for directional clarity
 - ✅ Webhook attribution (messages appear under the sender's name/avatar)
 - ✅ Attachment forwarding (images, files) from both sides
 - ✅ Deduplication - EventStore prevents echo loops
@@ -80,6 +81,8 @@ See [`config/config.sample.yaml`](config/config.sample.yaml) for all options.
 
 ### Minimal config:
 
+Senders are automatically tagged — `[Signal]` on Discord, `[Discord]` on Signal.
+
 ```yaml
 signal:
   account: "+15551234567"
@@ -133,6 +136,7 @@ Enable Developer Mode in Discord (User Settings → Advanced → Developer Mode)
 | Messages from others don't arrive | Not yet received - daemon delivers all via push notifications | Enable `console: "verbose"` and check logs for `SIGNAL_RECEIVE` lines |
 | CLI receive errors in logs | Stale build artifacts | Run `npm run build` to recompile from TypeScript source |
 | DMs leaking to group-mapped channels | Missing `scope` on mapping | Add `scope: "group"` to group chat mappings |
+| Discord shows `[Discord]` prefix on messages | Expected behavior | Signal side adds `[Discord]` attribution tag |
 
 ## License
 

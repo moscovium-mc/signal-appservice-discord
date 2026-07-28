@@ -160,9 +160,10 @@ export class Orchestrator {
             }
 
             // Display: use sourceName from envelope, else contacts mapping, else last 4 digits
-            const displayName = parsed.sourceName
+            const rawName = parsed.sourceName
                 || await this.profileCache.getUsername(parsed.source)
                 || `Signal-${parsed.source.substring(parsed.source.length - 4)}`;
+            const displayName = `[Signal] ${rawName}`;
 
             const attachments = parsed.attachments || [];
 

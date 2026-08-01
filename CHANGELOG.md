@@ -35,7 +35,6 @@ Initial release.
 - DM leak: group-only mappings no longer trigger on DMs (add `scope: "group"` to prevent DMs from matching)
 - Profile cache returns null instead of `Signal-XXXX` fallback for unknown contacts
 - CLI receive subprocess removed (broken in daemon mode) - push notifications only
-- Em dashes replaced with regular dashes throughout documentation
 - Build output now properly tracked via `postinstall` script
 - Config mappings now take priority over stale DB entries (Discord channel claimed by config is skipped during DB load)
 
